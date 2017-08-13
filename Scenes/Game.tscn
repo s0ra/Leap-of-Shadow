@@ -1,0 +1,53 @@
+[gd_scene load_steps=8 format=1]
+
+[ext_resource path="res://Scripts/Game.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/Board.gd" type="Script" id=2]
+[ext_resource path="res://Scripts/States/IdlePlayer.gd" type="Script" id=3]
+[ext_resource path="res://Scripts/States/Moving.gd" type="Script" id=4]
+[ext_resource path="res://Scripts/States/IdleShadow.gd" type="Script" id=5]
+[ext_resource path="res://Scripts/States/Disappear.gd" type="Script" id=6]
+[ext_resource path="res://Scripts/Pathfinding.gd" type="Script" id=7]
+
+[node name="Game" type="Node"]
+
+script/script = ExtResource( 1 )
+window_zoom = 1
+
+[node name="Board" type="Node" parent="."]
+
+script/script = ExtResource( 2 )
+inner_grid_size = Vector2( 10, 12 )
+outside_grid_size = Vector2( 1, 1 )
+count_items = Vector2( 3, 6 )
+count_enemies = Vector2( 2, 2 )
+dimension = Vector2( 13, 17 )
+
+[node name="States" type="Node" parent="."]
+
+[node name="IdlePlayer" type="Node" parent="States"]
+
+script/script = ExtResource( 3 )
+
+[node name="Teleport" type="Node" parent="States"]
+
+[node name="Summon" type="Node" parent="States"]
+
+[node name="Moving" type="Node" parent="States"]
+
+script/script = ExtResource( 4 )
+
+[node name="Hit" type="Node" parent="States"]
+
+[node name="IdleShadow" type="Node" parent="States"]
+
+script/script = ExtResource( 5 )
+
+[node name="Disappear" type="Node" parent="States"]
+
+script/script = ExtResource( 6 )
+
+[node name="Pathfinding" type="Node" parent="."]
+
+script/script = ExtResource( 7 )
+
+
