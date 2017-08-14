@@ -17,7 +17,7 @@ func _ready():
 	self.__board.make_board(map, self.__board.dimension)
 	
 	self.__set_screen()
-	#set_process_input(true)
+#	set_process_input(true)
 
 #func _input(event):
 #	if event.is_action_pressed('mouse_left'):

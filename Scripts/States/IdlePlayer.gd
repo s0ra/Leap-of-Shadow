@@ -17,11 +17,12 @@ func input(entity, event):
 		var e_xy = pos_to_xy(entity.get_pos())
 		var m_xy = pos_to_xy(event.pos)
 		if graph[m_xy.y][m_xy.x] == '.' and e_xy != m_xy:
-			var s_id = get_tree().get_nodes_in_group('shadow').size() % 9 + 1
+#			var s_id = get_tree().get_nodes_in_group('shadow').size() % 9 + 1
 			path = __pathfinding.search(graph, e_xy, m_xy)
 			__board.__add_tile(__board.__tile_collection.item.shadow, e_xy)
 			var shadow = get_tree().get_nodes_in_group('shadow')
 			shadow = shadow.back()
+			shadow.pos = entity.get_pos()
 			var state_shadow = self.__parent.get_node('IdleShadow')
 			shadow.path = path
 			shadow.transition_to(state_shadow)

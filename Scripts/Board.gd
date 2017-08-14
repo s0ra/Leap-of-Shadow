@@ -68,6 +68,9 @@ func make_board(map, dim):
 			elif map[y][x] == '.':
 				tile = __rand_tile(__tile_collection.item.floors)
 			__add_tile(tile, Vector2(x, y))
+			if map[y][x] == '.':
+				if randf() < 0.05:
+					__add_tile(__rand_tile(__tile_collection.item.enemies), Vector2(x, y))
 	self.__add_tile(self.__tile_collection.item.player, Vector2(1, 1))
 
 func __rand_tile(tile_set):

@@ -29,7 +29,7 @@ extents = Vector2( 16, 16 )
 visibility/opacity = 0.5
 frames = SubResource( 1 )
 animation = "default"
-frame = 2
+frame = 5
 playing = true
 centered = false
 script/script = ExtResource( 7 )
@@ -45,8 +45,8 @@ gravity_vec = Vector2( 0, 1 )
 gravity = 98.0
 linear_damp = 0.1
 angular_damp = 1.0
-collision/layers = 2
-collision/mask = 2
+collision/layers = 8
+collision/mask = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 
@@ -57,33 +57,33 @@ _update_shape_index = 0
 [node name="RayCast2DDown" type="RayCast2D" parent="."]
 
 transform/pos = Vector2( 16, 16 )
-enabled = false
+enabled = true
 cast_to = Vector2( 0, 16 )
-layer_mask = 24
+layer_mask = 6
 type_mask = 16
 
 [node name="RayCast2DRight" type="RayCast2D" parent="."]
 
 transform/pos = Vector2( 16, 16 )
-enabled = false
+enabled = true
 cast_to = Vector2( 16, 0 )
-layer_mask = 24
+layer_mask = 6
 type_mask = 16
 
 [node name="RayCast2DUp" type="RayCast2D" parent="."]
 
 transform/pos = Vector2( 16, 16 )
-enabled = false
+enabled = true
 cast_to = Vector2( 0, -16 )
-layer_mask = 24
+layer_mask = 6
 type_mask = 16
 
 [node name="RayCast2DLeft" type="RayCast2D" parent="."]
 
 transform/pos = Vector2( 16, 16 )
-enabled = false
+enabled = true
 cast_to = Vector2( -16, 0 )
-layer_mask = 24
+layer_mask = 6
 type_mask = 16
 
 
