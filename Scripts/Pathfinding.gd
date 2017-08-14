@@ -7,10 +7,12 @@ var DOWN = Vector2(0, -1)
 var road = '.'
 var wall = '#'
 var as = AStar.new()
-var __width = 0
-var __height = 0
+var __width = 13
+var __height = 17
 
 func search(nodes, start, goal):
+	__width = 13
+	__height = 17
 	var result = as.get_id_path(start.y*__width+start.x, goal.y*__width+goal.x)
 	var path = []
 	for i in range(result.size()):
@@ -28,14 +30,14 @@ func load_nodes(nodes):
 	for y in range(__height):
 		for x in range(__width):
 			if nodes[y][x] == road:
-				var adj = adjacent(Vector2(x, y), nodes)
+				var adj = adjacent(Vector2(x, y), nodes, Vector2(__width, __height))
 				for node in adj:
 					if not as.are_points_connected(y*__width+x, node.y*__width+node.x):
 						as.connect_points(y*__width+x, node.y*__width+node.x)
 
-func adjacent(node, graph, empty=false):
+func adjacent(node, graph, dim, empty=false):
 	var nodes = []
-	var xy = Vector2(__width, __height)
+	var xy = Vector2(dim.x, dim.y)
 	if bound(node + self.LEFT, xy):
 		var x = (node + self.LEFT).x
 		var y = (node + self.LEFT).y

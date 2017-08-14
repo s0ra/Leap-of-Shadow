@@ -9,7 +9,7 @@ var path = []
 var path_start
 var path_end
 var __pos_start = 0
-var duration = 0.1
+var duration = 1
 var __time_elapsed = 0
 var delta_xy
 onready var back = Vector2(0, -1)

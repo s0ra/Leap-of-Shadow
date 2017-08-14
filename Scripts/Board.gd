@@ -7,6 +7,7 @@ export var count_enemies = Vector2(2, 2)
 export var dimension = Vector2(13, 17)
 var __tile_collection
 var __grid
+onready var __pathfinding = self.get_node('/root/Game/Pathfinding')
 
 class TileCollection:
 	var item = {}
@@ -60,7 +61,9 @@ func generate_maze():
 	return map
 
 func make_board(map, dim):
+	__pathfinding.load_nodes(map)
 	var tile = __tile_collection.item.floors
+	var enemies_xy = find_freely_connected(map, dim)
 	for y in range(dim.y):
 		for x in range(dim.x):
 			if map[y][x] == '#':
@@ -68,15 +71,36 @@ func make_board(map, dim):
 			elif map[y][x] == '.':
 				tile = __rand_tile(__tile_collection.item.floors)
 			__add_tile(tile, Vector2(x, y))
-			if map[y][x] == '.':
-				if randf() < 0.05:
-					__add_tile(__rand_tile(__tile_collection.item.enemies), Vector2(x, y))
+#			if map[y][x] == '.':
+#				if randf() < 0.05:
+#					__add_tile(__rand_tile(__tile_collection.item.enemies), Vector2(x, y))
+	for enemy_xy in enemies_xy:
+		var adj = __pathfinding.adjacent(enemy_xy, map, dim)
+		var i = randi() % adj.size()
+		var start = adj[i]
+		var goal = adj[(i + 1) % adj.size()]
+		print(start, goal)
+		print(start, goal)
+		__add_tile(__rand_tile(__tile_collection.item.enemies), start)
+		var enemy = get_tree().get_nodes_in_group('enemy').back()
+#		print(__pathfinding.search(map, start, goal))
+		enemy.path = __pathfinding.search(map, start, goal)
 	self.__add_tile(self.__tile_collection.item.player, Vector2(1, 1))
 
 func __rand_tile(tile_set):
 	var tiles = tile_set.get_children()
 	var r = randi() % tiles.size()
 	return tiles[r]
+
+func find_freely_connected(map, dim):
+	var nodes = []
+	for y in range(dim.y):
+		for x in range(dim.x):
+			if map[y][x] == '.':
+				var num = __pathfinding.adjacent(Vector2(x, y), map, dim).size()
+				if num > 2:
+					nodes.append(Vector2(x, y))
+	return nodes
 
 func _ready():
 	pass

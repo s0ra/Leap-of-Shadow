@@ -6,12 +6,16 @@ onready var __pathfinding = get_node('/root/Game/Pathfinding')
 
 func enter(entity):
 	entity.set_process_input(true)
-	entity.set_fixed_process(false)
+	entity.set_fixed_process(true)
 	if not entity.path.empty():
+		print(entity.path)
 		var state = self.__parent.get_node('Moving')
 		entity.transition_to(state)
 
-#func update(entity, delta_time):
+func update(entity, delta_time):
+	if not entity.path.empty():
+		var state = self.__parent.get_node('Moving')
+		entity.transition_to(state)
 #		if entity.ray_casts[entity.back].is_colliding():
 #			var state_name
 #			if entity.is_in_group('enemy'):

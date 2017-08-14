@@ -17,7 +17,7 @@ func enter(entity):
 	entity.pos = entity.__pos_start
 	if not entity.path.empty():
 		entity.delta_xy = entity.path[1] - entity.path[0]
-		entity.back = -entity.delta_xy
+		entity.back = entity.delta_xy
 #	if entity.is_in_group('enemy'):
 #		print('hi')
 #		if entity.ray_casts[entity.back].collider().is_in_group('shadow'):

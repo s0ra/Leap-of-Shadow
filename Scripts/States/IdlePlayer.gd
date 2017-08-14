@@ -6,7 +6,7 @@ onready var __pathfinding = get_node('/root/Game/Pathfinding')
 var path = []
 
 func enter(entity):
-	__pathfinding.load_nodes(__game.map)
+#	__pathfinding.load_nodes(__game.map)
 	entity.set_process_input(true)
 	entity.set_fixed_process(false)
 
