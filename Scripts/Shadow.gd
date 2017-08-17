@@ -8,7 +8,7 @@ var id = 0
 var path = []
 var back
 var __pos_start = 0
-var duration = 0.1
+var duration = 0.2
 var __time_elapsed = 0
 var delta_xy
 var pos

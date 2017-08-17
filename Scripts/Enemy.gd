@@ -8,12 +8,15 @@ var id = 0
 var path = []
 var path_start
 var path_end
+var path_2 = []
 var __pos_start = 0
 var duration = 1
 var __time_elapsed = 0
 var delta_xy
 onready var back = Vector2(0, -1)
 var pos
+var time = 0
+var chased = false
 
 onready var ray_casts = {
     UNIT_RIGHT: self.get_node('RayCast2DRight'),
@@ -22,7 +25,7 @@ onready var ray_casts = {
     UNIT_UP: self.get_node('RayCast2DUp')
 }
 onready var __states = self.get_node('/root/Game/States')
-onready var __state = self.__states.get_node('IdleEnemy')
+onready var __state = self.__states.get_node('WaitEnemies')
 
 func transition_to(state):
 	self.__state = state

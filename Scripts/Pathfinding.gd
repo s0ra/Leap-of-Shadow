@@ -11,8 +11,6 @@ var __width = 13
 var __height = 17
 
 func search(nodes, start, goal):
-	__width = 13
-	__height = 17
 	var result = as.get_id_path(start.y*__width+start.x, goal.y*__width+goal.x)
 	var path = []
 	for i in range(result.size()):
@@ -62,3 +60,39 @@ func adjacent(node, graph, dim, empty=false):
 
 func bound(xy, size):
 	return xy.x < size.x and xy.y < size.y and xy.x >= 0 and xy.y >= 0
+
+func see(map, sight_pos, target_pos, direction):
+	var s_xy = pos_to_xy(sight_pos)
+	var t_xy = pos_to_xy(target_pos)
+	var path = []
+	while map[s_xy.y][s_xy.x] == road:
+		if s_xy != t_xy:
+			path.append(s_xy)
+			s_xy += direction
+		else:
+			return path
+	return null
+
+#	if entity.is_in_group('enemy'):
+#		var player = entity.get_node('../Player')
+#		var player_pos = player.get_pos()
+#		var self_pos = entity.get_pos()
+#		if abs(self_pos.x - player_pos.x) < EPSILON:
+#			if self_pos.y < player_pos.y:
+#				entity.delta_xy = entity.UNIT_DOWN
+#			else:
+#				entity.delta_xy = entity.UNIT_UP
+#			entity.path = []
+#			entity.path_2 = []
+#		elif abs(self_pos.y - player_pos.y) < EPSILON:
+#			if self_pos.x < player_pos.x:
+#				entity.delta_xy = entity.UNIT_RIGHT
+#			else:
+#				entity.delta_xy = entity.UNIT_LEFT
+#			var state = self.__parent.get_node('Moving')
+#			entity.path = []
+#			entity.path_2 = []
+
+func pos_to_xy(pos):
+	var xy = Vector2(int(pos.x / 32), int(pos.y / 32))
+	return xy

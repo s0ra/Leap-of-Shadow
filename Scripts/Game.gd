@@ -12,6 +12,7 @@ func __set_screen():
 
 func _ready():
 	randomize()
+#	seed(5)
 	self.__board.fetch_tiles('res://Scenes/TileSet.tscn', 'Floors/1')
 	map = self.__board.generate_maze()
 	self.__board.make_board(map, self.__board.dimension)

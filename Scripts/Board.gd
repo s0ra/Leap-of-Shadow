@@ -68,23 +68,41 @@ func make_board(map, dim):
 		for x in range(dim.x):
 			if map[y][x] == '#':
 				tile = __rand_tile(__tile_collection.item.walls)
+				__add_tile(tile, Vector2(x, y))
 			elif map[y][x] == '.':
 				tile = __rand_tile(__tile_collection.item.floors)
-			__add_tile(tile, Vector2(x, y))
+				__add_tile(tile, Vector2(x, y))
+				if randf() < 0.3:
+					__add_tile(__rand_tile(__tile_collection.item.items), Vector2(x, y))
 #			if map[y][x] == '.':
 #				if randf() < 0.05:
 #					__add_tile(__rand_tile(__tile_collection.item.enemies), Vector2(x, y))
 	for enemy_xy in enemies_xy:
-		var adj = __pathfinding.adjacent(enemy_xy, map, dim)
-		var i = randi() % adj.size()
-		var start = adj[i]
-		var goal = adj[(i + 1) % adj.size()]
-		print(start, goal)
-		print(start, goal)
-		__add_tile(__rand_tile(__tile_collection.item.enemies), start)
-		var enemy = get_tree().get_nodes_in_group('enemy').back()
-#		print(__pathfinding.search(map, start, goal))
-		enemy.path = __pathfinding.search(map, start, goal)
+		if randf() < 0.5:
+			var adj = __pathfinding.adjacent(enemy_xy, map, dim)
+			var i = randi() % adj.size()
+			var start = adj[i]
+			adj.remove(i)
+			var next_1 = adj[(i + randi()) % adj.size()]
+			var next_2 = []
+			var previous = []
+			for adj_1 in __pathfinding.adjacent(start, map, dim):
+				if adj_1 != enemy_xy:
+					previous.append(adj_1)
+			for adj_1 in __pathfinding.adjacent(next_1, map, dim):
+				if adj_1 != enemy_xy:
+					next_2.append(adj_1)
+			i = randi() % next_2.size()
+			var goal = next_2[i]
+			i = randi() % previous.size()
+			var start = previous[i]
+			__add_tile(__rand_tile(__tile_collection.item.enemies), start)
+			var enemy = get_tree().get_nodes_in_group('enemy').back()
+	#		print(__pathfinding.search(map, start, goal))
+			enemy.path = __pathfinding.search(map, start, goal)
+			for path in enemy.path:
+				enemy.path_2.append(path)
+			enemy.path_2.invert()
 	self.__add_tile(self.__tile_collection.item.player, Vector2(1, 1))
 
 func __rand_tile(tile_set):

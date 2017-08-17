@@ -8,12 +8,13 @@ func enter(entity):
 	entity.set_process_input(true)
 	entity.set_fixed_process(true)
 	if not entity.path.empty():
-		print(entity.path)
+#		print(entity.path)
 		var state = self.__parent.get_node('Moving')
 		entity.transition_to(state)
 
 func update(entity, delta_time):
 	if not entity.path.empty():
+#		print(entity.path)
 		var state = self.__parent.get_node('Moving')
 		entity.transition_to(state)
 #		if entity.ray_casts[entity.back].is_colliding():

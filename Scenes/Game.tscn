@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=1]
+[gd_scene load_steps=15 format=1]
 
 [ext_resource path="res://Scripts/Game.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Board.gd" type="Script" id=2]
@@ -9,7 +9,11 @@
 [ext_resource path="res://Scripts/States/IdleEnemies.gd" type="Script" id=7]
 [ext_resource path="res://Scripts/States/DisappearEnemies.gd" type="Script" id=8]
 [ext_resource path="res://Scripts/States/TeleportPlayer.gd" type="Script" id=9]
-[ext_resource path="res://Scripts/Pathfinding.gd" type="Script" id=10]
+[ext_resource path="res://Scripts/States/WaitEnemies.gd" type="Script" id=10]
+[ext_resource path="res://Scripts/States/DisappearPlayer.gd" type="Script" id=11]
+[ext_resource path="res://Scripts/States/DisappearCoin.gd" type="Script" id=12]
+[ext_resource path="res://Scripts/States/IdleCoin.gd" type="Script" id=13]
+[ext_resource path="res://Scripts/Pathfinding.gd" type="Script" id=14]
 
 [node name="Game" type="Node"]
 
@@ -47,7 +51,7 @@ script/script = ExtResource( 5 )
 
 script/script = ExtResource( 6 )
 
-[node name="IdleEnemy" type="Node" parent="States"]
+[node name="IdleEnemies" type="Node" parent="States"]
 
 script/script = ExtResource( 7 )
 
@@ -59,9 +63,25 @@ script/script = ExtResource( 8 )
 
 script/script = ExtResource( 9 )
 
-[node name="Pathfinding" type="Node" parent="."]
+[node name="WaitEnemies" type="Node" parent="States"]
 
 script/script = ExtResource( 10 )
+
+[node name="DisappearPlayer" type="Node" parent="States"]
+
+script/script = ExtResource( 11 )
+
+[node name="DisappearCoin" type="Node" parent="States"]
+
+script/script = ExtResource( 12 )
+
+[node name="IdleCoin" type="Node" parent="States"]
+
+script/script = ExtResource( 13 )
+
+[node name="Pathfinding" type="Node" parent="."]
+
+script/script = ExtResource( 14 )
 
 [node name="Pattern" type="Node" parent="."]
 
