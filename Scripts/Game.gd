@@ -12,11 +12,11 @@ func __set_screen():
 
 func _ready():
 	randomize()
-#	seed(5)
+	Progress.next_level()
+	Progress.new_parameters()
 	self.__board.fetch_tiles('res://Scenes/TileSet.tscn', 'Floors/1')
 	map = self.__board.generate_maze()
 	self.__board.make_board(map, self.__board.dimension)
-	
 	self.__set_screen()
 #	set_process_input(true)
 

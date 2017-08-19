@@ -77,33 +77,49 @@ func make_board(map, dim):
 #			if map[y][x] == '.':
 #				if randf() < 0.05:
 #					__add_tile(__rand_tile(__tile_collection.item.enemies), Vector2(x, y))
-	for enemy_xy in enemies_xy:
-		if randf() < 0.5:
-			var adj = __pathfinding.adjacent(enemy_xy, map, dim)
-			var i = randi() % adj.size()
-			var start = adj[i]
-			adj.remove(i)
-			var next_1 = adj[(i + randi()) % adj.size()]
-			var next_2 = []
-			var previous = []
-			for adj_1 in __pathfinding.adjacent(start, map, dim):
-				if adj_1 != enemy_xy:
-					previous.append(adj_1)
-			for adj_1 in __pathfinding.adjacent(next_1, map, dim):
-				if adj_1 != enemy_xy:
-					next_2.append(adj_1)
-			i = randi() % next_2.size()
-			var goal = next_2[i]
-			i = randi() % previous.size()
-			var start = previous[i]
-			__add_tile(__rand_tile(__tile_collection.item.enemies), start)
-			var enemy = get_tree().get_nodes_in_group('enemy').back()
-	#		print(__pathfinding.search(map, start, goal))
-			enemy.path = __pathfinding.search(map, start, goal)
-			for path in enemy.path:
-				enemy.path_2.append(path)
-			enemy.path_2.invert()
-	self.__add_tile(self.__tile_collection.item.player, Vector2(1, 1))
+	var total_ene = 0
+	var scores = 0
+	var target = false
+	while total_ene <= Progress.param.min_ene:
+		for enemy_xy in enemies_xy:
+			if randf() < 0.5 and total_ene <= Progress.param.max_ene:
+				total_ene += 1
+				var adj = __pathfinding.adjacent(enemy_xy, map, dim)
+				var i = randi() % adj.size()
+				var start = adj[i]
+				adj.remove(i)
+				var next_1 = adj[(i + randi()) % adj.size()]
+				var next_2 = []
+				var previous = []
+				for adj_1 in __pathfinding.adjacent(start, map, dim):
+					if adj_1 != enemy_xy:
+						previous.append(adj_1)
+				for adj_1 in __pathfinding.adjacent(next_1, map, dim):
+					if adj_1 != enemy_xy:
+						next_2.append(adj_1)
+				i = randi() % next_2.size()
+				var goal = next_2[i]
+				i = randi() % previous.size()
+				var start = previous[i]
+				var enemy
+				if randi() % 3 >= 1 and not target:
+					target = true
+					__add_tile(__rand_tile(__tile_collection.item.target), start)
+					Progress.target = get_tree().get_nodes_in_group('enemy').back()
+				else:
+					__add_tile(__rand_tile(__tile_collection.item.enemies), start)
+				
+				enemy = get_tree().get_nodes_in_group('enemy').back()
+		#		print(__pathfinding.search(map, start, goal))
+				enemy.path = __pathfinding.search(map, start, goal)
+				for path in enemy.path:
+					enemy.path_2.append(path)
+				enemy.path_2.invert()
+	var player_xy
+	if not Globals.has('player_xy'):
+		Globals.set('player_xy', Vector2(1, 1))
+	player_xy = Globals.get('player_xy')
+	self.__add_tile(self.__tile_collection.item.player, player_xy)
 
 func __rand_tile(tile_set):
 	var tiles = tile_set.get_children()
