@@ -70,6 +70,7 @@ func see(map, sight_pos, target_pos, direction):
 			path.append(s_xy)
 			s_xy += direction
 		else:
+			path.append(s_xy)
 			return path
 	return null
 

@@ -17,6 +17,7 @@ func enter(entity):
 	entity.__time_elapsed = 0
 	entity.__pos_start = entity.get_pos()
 	entity.pos = entity.__pos_start
+	
 	if entity.path.size() > 1:
 		entity.delta_xy = entity.path[1] - entity.path[0]
 		if entity.is_in_group('enemy'):
@@ -40,7 +41,9 @@ func enter(entity):
 	if entity.ray_casts[entity.delta_xy].is_colliding():
 		var state_name
 		if entity.is_in_group('shadow'):
-			var back = entity.ray_casts[entity.delta_xy].get_collider().get_parent().back
+			var back = entity.ray_casts[entity.delta_xy].get_collider()
+			if not back == null:
+				back = back.get_parent().back
 #			if entity.hit_success:
 			if back == entity.delta_xy:
 				state_name = 'DisappearEnemies'
@@ -113,64 +116,103 @@ func update(entity, delta_time):
 		var state_name
 		
 		if entity.is_in_group('enemy'):
-			var player = get_tree().get_nodes_in_group('player').front()
-			if entity.chased == true and entity.path.empty():
-				entity.chased = false
-				entity.pos = entity.get_pos()
-				var adj = __pathfinding.adjacent(__pathfinding.pos_to_xy(entity.pos), __game.map, __board.dimension)
-				var i = randi() % adj.size()
-				var start = adj[i]
-				var goal
-				adj.remove(i)
-				var next_1 = adj[(i + randi()) % adj.size()]
-				var next_2 = []
-				var next_3 = []
-				var next_4 = []
-				for adj_1 in __pathfinding.adjacent(next_1, __game.map, __board.dimension):
-					if adj_1 != __pathfinding.pos_to_xy(entity.pos):
-						next_2.append(adj_1)
-				if not next_2.empty():
-					i = randi() % next_2.size()
-					next_2 = next_2[i]
-				else:
-					next_2 = next_1
-				goal = next_2
-				for adj_1 in __pathfinding.adjacent(goal, __game.map, __board.dimension):
-					if adj_1 != next_1:
-						next_3.append(adj_1)
-				if not next_3.empty():
-					i = randi() % next_3.size()
-					next_3 = next_3[i]
-				else:
-					next_3 = next_2
-				goal = next_3
-				for adj_1 in __pathfinding.adjacent(goal, __game.map, __board.dimension):
-					if adj_1 != next_2:
-						next_4.append(adj_1)
-				if not next_4.empty():
-					i = randi() % next_4.size()
-					goal = next_4[i]
-				else:
-					goal = next_3
-				entity.path = __pathfinding.search(__game.map, start, goal)
-				for path in entity.path:
-					entity.path_2.append(path)
-				entity.path_2.invert()
-				entity.path.pop_front()
-				entity.path_2.pop_back()
-				state_name = 'Moving'
-				entity.transition_to(self.__parent.get_node(state_name))
-			if player != null:
-				var player_pos = player.get_pos()
-				var self_pos = entity.get_pos()
-				var chase = __pathfinding.see(__game.map, self_pos, player_pos, entity.delta_xy)
-				if chase != null:
-					entity.path = chase
-					entity.path_2 = []
-					entity.duration = 0.7
-					var state = self.__parent.get_node('Moving')
-					entity.transition_to(state)
-					entity.chased = true
+			if not get_tree().get_nodes_in_group('player').empty():
+				var player = get_tree().get_nodes_in_group('player').front()
+				if entity.chased == true and entity.path.empty():
+					entity.chased = false
+					entity.pos = entity.get_pos()
+					var adj = __pathfinding.adjacent(__pathfinding.pos_to_xy(entity.pos), __game.map, __board.dimension)
+					var i = randi() % adj.size()
+					var start = adj[i]
+					var goal
+					adj.remove(i)
+					var next_1
+					if not adj.empty():
+						next_1 = adj[(i + randi()) % adj.size()]
+						var next_2 = []
+						var next_3 = []
+						var next_4 = []
+						for adj_1 in __pathfinding.adjacent(next_1, __game.map, __board.dimension):
+							if adj_1 != __pathfinding.pos_to_xy(entity.pos):
+								next_2.append(adj_1)
+						if not next_2.empty():
+							i = randi() % next_2.size()
+							next_2 = next_2[i]
+						else:
+							next_2 = next_1
+						goal = next_2
+						for adj_1 in __pathfinding.adjacent(goal, __game.map, __board.dimension):
+							if adj_1 != next_1:
+								next_3.append(adj_1)
+						if not next_3.empty():
+							i = randi() % next_3.size()
+							next_3 = next_3[i]
+						else:
+							next_3 = next_2
+						goal = next_3
+						for adj_1 in __pathfinding.adjacent(goal, __game.map, __board.dimension):
+							if adj_1 != next_2:
+								next_4.append(adj_1)
+						if not next_4.empty():
+							i = randi() % next_4.size()
+							goal = next_4[i]
+						else:
+							goal = next_3
+						entity.path = __pathfinding.search(__game.map, start, goal)
+						for path in entity.path:
+							entity.path_2.append(path)
+						entity.path_2.invert()
+						entity.path.pop_front()
+						entity.path_2.pop_back()
+						state_name = 'Moving'
+						entity.transition_to(self.__parent.get_node(state_name))
+					else:
+						entity.delta_xy = -entity.delta_xy
+						entity.back = entity.delta_xy
+						if entity.delta_xy == Vector2(0, 1):
+							entity.play('Down')
+						elif entity.delta_xy == Vector2(0, -1):
+							entity.play('Up')
+						elif entity.delta_xy == Vector2(1, 0):
+							entity.play('Right')
+						elif entity.delta_xy == Vector2(-1, 0):
+							entity.play('Left')
+				
+				if player != null:
+					var player_pos = player.get_pos()
+					var self_pos = entity.get_pos()
+					var chase = __pathfinding.see(__game.map, self_pos, player_pos, entity.delta_xy)
+					if chase != null:
+						if entity.is_in_group('target'):
+	#						var adj = __pathfinding.adjacent(chase[0], __game.map, __board.dimension)
+	#						adj.remove(chase[1])
+							var start
+							var goal
+	#						if not adj.empty():
+							var player = get_tree().get_nodes_in_group('player').front()
+							var player_xy = pos_to_xy(player.get_pos())
+							if player != null:
+								start = pos_to_xy(entity.get_pos())
+								while goal == null:
+									for y in range(__board.dimension.y):
+										for x in range(__board.dimension.x):
+											if x % 2 == 1 and y % 2 == 1 and randi() % 101 <= 3:
+												var path = __pathfinding.search(__game.map, player_xy, Vector2(x, y))
+												if path.size() > 10:
+													goal = Vector2(x, y)
+													entity.path = __pathfinding.search(__game.map, start, goal)
+													entity.path_2 = []
+													entity.duration = 0.4
+													var state = self.__parent.get_node('Moving')
+													entity.transition_to(state)
+													entity.chased = true
+						else:
+							entity.path = chase
+							entity.path_2 = []
+							entity.duration = 0.7
+							var state = self.__parent.get_node('Moving')
+							entity.transition_to(state)
+							entity.chased = true
 			
 		
 		if not entity.path.empty():
@@ -195,3 +237,7 @@ func update(entity, delta_time):
 		entity.set_offset(pos - entity.get_pos())
 	else:
 		entity.set_pos(pos)
+
+func pos_to_xy(pos):
+	var xy = Vector2(int(pos.x / 32), int(pos.y / 32))
+	return xy

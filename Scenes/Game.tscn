@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=1]
+[gd_scene load_steps=17 format=1]
 
 [ext_resource path="res://Scripts/Game.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Board.gd" type="Script" id=2]
@@ -14,6 +14,8 @@
 [ext_resource path="res://Scripts/States/DisappearCoin.gd" type="Script" id=12]
 [ext_resource path="res://Scripts/States/IdleCoin.gd" type="Script" id=13]
 [ext_resource path="res://Scripts/Pathfinding.gd" type="Script" id=14]
+[ext_resource path="res://Assets/Sprites/EnemyIdle/Down.png" type="Texture" id=15]
+[ext_resource path="res://Scripts/Down.gd" type="Script" id=16]
 
 [node name="Game" type="Node"]
 
@@ -84,5 +86,30 @@ script/script = ExtResource( 13 )
 script/script = ExtResource( 14 )
 
 [node name="Pattern" type="Node" parent="."]
+
+[node name="Down" type="TextureProgress" parent="."]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 32.0
+margin/bottom = 32.0
+range/min = 0.0
+range/max = 100.0
+range/step = 1.0
+range/page = 0.0
+range/value = 1.0
+range/exp_edit = false
+range/rounded = false
+texture/under = null
+texture/over = null
+texture/progress = ExtResource( 15 )
+mode = 2
+radial_fill/fill_degrees = 360.0
+radial_fill/center_offset = Vector2( 0, 0 )
+script/script = ExtResource( 16 )
 
 

@@ -17,6 +17,20 @@ func update(entity, delta_time):
 #		print(entity.path)
 		var state = self.__parent.get_node('Moving')
 		entity.transition_to(state)
+	var player
+	if not get_tree().get_nodes_in_group('player').empty():
+		player = get_tree().get_nodes_in_group('player').front()
+	if player != null:
+		var player_pos = player.get_pos()
+		var self_pos = entity.get_pos()
+		var chase = __pathfinding.see(__game.map, self_pos, player_pos, entity.delta_xy)
+		if chase != null:
+			entity.path = chase
+			entity.path_2 = []
+			entity.duration = 0.7
+			var state = self.__parent.get_node('Moving')
+			entity.transition_to(state)
+			entity.chased = true
 #		if entity.ray_casts[entity.back].is_colliding():
 #			var state_name
 #			if entity.is_in_group('enemy'):

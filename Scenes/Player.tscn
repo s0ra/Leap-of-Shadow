@@ -28,7 +28,6 @@ extents = Vector2( 16, 16 )
 
 frames = SubResource( 1 )
 animation = "default"
-frame = 1
 playing = true
 centered = false
 script/script = ExtResource( 7 )

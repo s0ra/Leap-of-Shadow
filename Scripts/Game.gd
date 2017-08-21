@@ -12,8 +12,12 @@ func __set_screen():
 
 func _ready():
 	randomize()
+#	seed(38) # corner find path
+#	seed(58) # instant kill
+#	seed(1)
 	Progress.next_level()
 	Progress.new_parameters()
+	print(Progress.level_id)
 	self.__board.fetch_tiles('res://Scenes/TileSet.tscn', 'Floors/1')
 	map = self.__board.generate_maze()
 	self.__board.make_board(map, self.__board.dimension)

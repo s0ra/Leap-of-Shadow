@@ -77,12 +77,17 @@ func make_board(map, dim):
 #			if map[y][x] == '.':
 #				if randf() < 0.05:
 #					__add_tile(__rand_tile(__tile_collection.item.enemies), Vector2(x, y))
+	var player_xy
+	if not Globals.has('player_xy'):
+		Globals.set('player_xy', Vector2(1, 1))
+	player_xy = Globals.get('player_xy')
 	var total_ene = 0
 	var scores = 0
 	var target = false
-	while total_ene <= Progress.param.min_ene:
+	var target_i = randi() % int(Progress.param.min_ene) + 1
+	while total_ene < Progress.param.min_ene:
 		for enemy_xy in enemies_xy:
-			if randf() < 0.5 and total_ene <= Progress.param.max_ene:
+			if randf() < 0.05 and total_ene < Progress.param.max_ene:
 				total_ene += 1
 				var adj = __pathfinding.adjacent(enemy_xy, map, dim)
 				var i = randi() % adj.size()
@@ -102,7 +107,7 @@ func make_board(map, dim):
 				i = randi() % previous.size()
 				var start = previous[i]
 				var enemy
-				if randi() % 3 >= 1 and not target:
+				if target_i == total_ene and not target:
 					target = true
 					__add_tile(__rand_tile(__tile_collection.item.target), start)
 					Progress.target = get_tree().get_nodes_in_group('enemy').back()
@@ -115,10 +120,8 @@ func make_board(map, dim):
 				for path in enemy.path:
 					enemy.path_2.append(path)
 				enemy.path_2.invert()
-	var player_xy
-	if not Globals.has('player_xy'):
-		Globals.set('player_xy', Vector2(1, 1))
-	player_xy = Globals.get('player_xy')
+				if pos_to_xy(enemy.get_pos()) == player_xy:
+					enemy.queue_free()
 	self.__add_tile(self.__tile_collection.item.player, player_xy)
 
 func __rand_tile(tile_set):
@@ -135,6 +138,10 @@ func find_freely_connected(map, dim):
 				if num > 2:
 					nodes.append(Vector2(x, y))
 	return nodes
+
+func pos_to_xy(pos):
+	var xy = Vector2(int(pos.x / 32), int(pos.y / 32))
+	return xy
 
 func _ready():
 	pass

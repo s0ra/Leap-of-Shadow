@@ -281,8 +281,8 @@ gravity_vec = Vector2( 0, 1 )
 gravity = 98.0
 linear_damp = 0.1
 angular_damp = 1.0
-collision/layers = 8
-collision/mask = 8
+collision/layers = 1024
+collision/mask = 1024
 script/script = ExtResource( 9 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Items/1/Area2D"]
@@ -297,10 +297,9 @@ _update_shape_index = 0
 "enemy",
 ]]
 
-editor/display_folded = true
 frames = SubResource( 4 )
 animation = "Idle"
-frame = 4
+frame = 2
 playing = true
 centered = false
 script/script = ExtResource( 20 )
@@ -361,10 +360,9 @@ type_mask = 16
 "enemy",
 ]]
 
-editor/display_folded = true
 frames = SubResource( 4 )
 animation = "Idle"
-frame = 3
+frame = 1
 playing = true
 centered = false
 script/script = ExtResource( 20 )
@@ -424,13 +422,13 @@ type_mask = 16
 [node name="Target" type="Node" parent="."]
 
 [node name="1" type="AnimatedSprite" parent="Target" groups=[
+"target",
 "enemy",
 ]]
 
-editor/display_folded = true
 frames = SubResource( 6 )
 animation = "Idle"
-frame = 3
+frame = 1
 playing = true
 centered = false
 script/script = ExtResource( 20 )
@@ -489,10 +487,8 @@ type_mask = 16
 
 [node name="Player" parent="." instance=ExtResource( 25 )]
 
-frame = 2
-
 [node name="Shadow" parent="." instance=ExtResource( 26 )]
 
-frame = 5
+frame = 3
 
 
